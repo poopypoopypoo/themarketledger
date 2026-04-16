@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ADBE — The Market Ledger</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'EB Garamond', Georgia, serif;
+    font-size: 17px;
+    line-height: 1.7;
+    color: #111;
+    background: #fff;
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 2.5rem 1.5rem 4rem;
+  }
+
+  .report-header {
+    border-bottom: 1px solid #e0e0e0;
+    padding-bottom: 1.5rem;
+    margin-bottom: 1.75rem;
+  }
+  .rh-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 1rem;
+    margin-bottom: 1.25rem;
+  }
+  .ticker-row { display: flex; align-items: center; gap: 14px; }
+  .ticker-icon {
+    width: 48px; height: 48px;
+    border-radius: 8px;
+    background: #FAEEDA;
+    color: #BA7517;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px; font-weight: 500;
+    flex-shrink: 0;
+  }
+  .ticker { font-size: 24px; font-weight: 500; }
+  .co-name { font-size: 14px; color: #666; margin-top: 2px; font-style: italic; }
+  .rh-right { text-align: right; flex-shrink: 0; }
+  .badge {
+    display: inline-block;
+    font-size: 11px; font-weight: 500;
+    padding: 4px 12px; border-radius: 20px;
+    background: #EAF3DE; color: #3B6D11;
+    margin-bottom: 8px;
+    font-family: -apple-system, sans-serif;
+  }
+  .price-curr { font-size: 26px; font-weight: 500; }
+  .price-pt { font-size: 14px; color: #666; margin-top: 2px; }
+  .price-pt span { color: #3B6D11; font-weight: 500; }
+  .thesis {
+    font-size: 17px;
+    color: #333;
+    line-height: 1.75;
+    border-top: 1px solid #eee;
+    padding-top: 1.25rem;
+  }
+
+  .metrics-strip {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    overflow: hidden;
+    margin-bottom: 2rem;
+  }
+  .metric-cell {
+    padding: 14px 16px;
+    border-right: 1px solid #e0e0e0;
+    background: #fafaf8;
+  }
+  .metric-cell:last-child { border-right: none; }
+  .mc-label { font-size: 11px; color: #888; margin-bottom: 4px; font-family: -apple-system, sans-serif; text-transform: uppercase; letter-spacing: 0.05em; }
+  .mc-val { font-size: 17px; font-weight: 500; }
+  .mc-val.up { color: #3B6D11; }
+
+  .section-title {
+    font-size: 11px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #888;
+    font-family: -apple-system, sans-serif;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 8px;
+    margin-bottom: 1.25rem;
+    margin-top: 2rem;
+  }
+
+  .chart-wrap { height: 200px; margin-bottom: 2rem; position: relative; }
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 2rem; }
+  .bar-wrap { height: 170px; position: relative; }
+  .chart-label { font-size: 13px; color: #888; font-family: -apple-system, sans-serif; margin-bottom: 6px; font-style: italic; }
+
+  .pillar { display: flex; gap: 14px; margin-bottom: 1.25rem; align-items: flex-start; }
+  .pnum {
+    width: 22px; height: 22px; border-radius: 50%;
+    background: #EAF3DE; color: #3B6D11;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px; font-weight: 500;
+    flex-shrink: 0; margin-top: 4px;
+    font-family: -apple-system, sans-serif;
+  }
+  .ptext { font-size: 16px; color: #333; line-height: 1.7; }
+  .ptext strong { font-weight: 500; color: #111; }
+
+  .catalyst-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 2rem; }
+  .cat-card { background: #fafaf8; border: 1px solid #e8e8e8; border-radius: 8px; padding: 12px 14px; }
+  .cat-label { font-size: 10px; color: #888; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 5px; font-family: -apple-system, sans-serif; }
+  .cat-val { font-size: 14px; color: #333; line-height: 1.5; }
+
+  .risks { border: 1px solid #e8e8e8; border-radius: 8px; overflow: hidden; margin-bottom: 2rem; }
+  .risk-item { padding: 12px 16px; border-bottom: 1px solid #eee; font-size: 15px; color: #444; line-height: 1.6; }
+  .risk-item:last-child { border-bottom: none; }
+  .risk-item strong { color: #111; font-weight: 500; }
+
+  .report-footer {
+    border-top: 1px solid #e0e0e0;
+    padding-top: 1rem;
+    margin-top: 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 13px;
+    color: #888;
+    font-family: -apple-system, sans-serif;
+  }
+  .footer-r { color: #3B6D11; font-weight: 500; }
+  .disclaimer {
+    margin-top: 2.5rem;
+    font-size: 13px;
+    color: #aaa;
+    font-style: italic;
+    line-height: 1.6;
+    border-top: 1px solid #eee;
+    padding-top: 1rem;
+  }
+
+  @media (max-width: 600px) {
+    .rh-top { flex-direction: column; }
+    .rh-right { text-align: left; }
+    .metrics-strip { grid-template-columns: repeat(3, 1fr); }
+    .metric-cell:nth-child(3) { border-right: none; }
+    .two-col { grid-template-columns: 1fr; }
+    .catalyst-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="report-header">
+  <div class="rh-top">
+    <div class="ticker-row">
+      <div class="ticker-icon" style="background:none;padding:0;overflow:hidden;">
+        <img src="https://static.cdnlogo.com/logos/a/90/adobe.png" alt="Adobe" style="width:48px;height:48px;object-fit:contain;">
+      </div>
+      <div>
+        <div class="ticker">Adobe</div>
+        <div class="co-name">Enterprise Software / Creative Cloud / Digital Experience &nbsp;&middot;&nbsp; NASDAQ: ADBE</div>
+      </div>
+    </div>
+    <div class="rh-right">
+      <div><span class="badge">Buy / Long</span></div>
+      <div class="price-curr" id="live-price">--</div>
+      <div class="price-pt">
+        Price target: <span>$353</span> &nbsp;&middot;&nbsp; <span id="live-upside">+47%</span> upside
+      </div>
+      <div id="price-meta" style="font-size:12px;color:#888;margin-top:4px;font-family:-apple-system,sans-serif;"></div>
+    </div>
+  </div>
+  <div class="thesis">
+    Adobe is trading at roughly 10x forward earnings, a decade low, on fears that generative AI is about to dismantle its creative software business. I think that story is wrong. The company just reported Q1 FY2026 revenue of $6.4 billion, up 12% year over year, with non-GAAP operating margins of 47.4% — both ahead of guidance. Firefly, Adobe's own generative AI tool, is already live inside Photoshop and actively used by over 35% of subscribers. AI is not eating Adobe's lunch; Adobe is serving it. At 10x forward earnings with 89% gross margins and 80%+ recurring revenue, the market is pricing in a disruption that the financials simply do not support.
+  </div>
+</div>
+
+<div class="metrics-strip">
+  <div class="metric-cell"><div class="mc-label">Market Cap</div><div class="mc-val">$97B</div></div>
+  <div class="metric-cell"><div class="mc-label">Revenue (TTM)</div><div class="mc-val">$24.5B</div></div>
+  <div class="metric-cell"><div class="mc-label">Gross Margin</div><div class="mc-val">89%</div></div>
+  <div class="metric-cell"><div class="mc-label">Fwd P/E</div><div class="mc-val">~10x</div></div>
+  <div class="metric-cell"><div class="mc-label">Price Target</div><div class="mc-val up">$353</div></div>
+</div>
+
+<div class="section-title">Price history (2023 to 2026)</div>
+<div class="chart-wrap"><canvas id="adbePriceChart"></canvas></div>
+
+<div class="section-title">Revenue and EPS growth</div>
+<div class="two-col">
+  <div>
+    <div class="chart-label">Annual revenue ($B)</div>
+    <div class="bar-wrap"><canvas id="adbeRevChart"></canvas></div>
+  </div>
+  <div>
+    <div class="chart-label">Diluted EPS ($)</div>
+    <div class="bar-wrap"><canvas id="adbeEpsChart"></canvas></div>
+  </div>
+</div>
+
+<div class="section-title">Investment thesis</div>
+<div class="pillars" style="margin-bottom:2rem;">
+  <div class="pillar">
+    <div class="pnum">1</div>
+    <div class="ptext"><strong>The valuation gap is the entire thesis.</strong> Oracle, with 47% operating margins, trades at 19x forward earnings. Microsoft, with similar margins, trades at 33x. Adobe, at 45% operating margins and 89% gross margins, is priced at roughly 10x forward earnings. That is the multiple you slap on a business in secular decline, not one growing revenue at double digits with a subscription base that renews at over 90%. Re-rating to a modest 18x on FY2026 EPS implies a price above $350, which is where the consensus analyst target sits. The stock does not need a miracle; it just needs the market to stop treating it like it is dying.</div>
+  </div>
+  <div class="pillar">
+    <div class="pnum">2</div>
+    <div class="ptext"><strong>The enterprise moat is not being contested where it counts.</strong> Canva, Midjourney, and Google's AI tools are winning over consumers and small businesses. But that is not where Adobe makes its money. Enterprise customers have compliance workflows, content governance requirements, and copyright indemnification needs that no AI-native startup currently provides. Those customers have been on Adobe contracts for years and are not evaluating alternatives — they are buying higher-tier plans to access Firefly. The low end of the market was never Adobe's primary revenue base.</div>
+  </div>
+  <div class="pillar">
+    <div class="pnum">3</div>
+    <div class="ptext"><strong>AI is expanding revenue per customer, not compressing it.</strong> Firefly is embedded natively across Creative Cloud and is driving upsell, not churn. Over 35% of Photoshop subscribers are active Firefly users. EPS has grown at an 18% CAGR over the past three years, and Q1 FY2026 EPS came in at $5.08 on a GAAP basis, beating estimates by $0.19. Michael Burry disclosed a position in ADBE in April 2026. The fundamentals and the smart money are both pointing in the same direction, while the stock price is still stuck in the fear trade.</div>
+  </div>
+</div>
+
+<div class="section-title">Key catalysts</div>
+<div class="catalyst-grid">
+  <div class="cat-card">
+    <div class="cat-label">New CEO announcement</div>
+    <div class="cat-val">Shantanu Narayen's exit is the single biggest overhang on the stock. A strong hire removes it immediately and historically triggers an analyst upgrade cycle.</div>
+  </div>
+  <div class="cat-card">
+    <div class="cat-label">Q2 FY2026 earnings</div>
+    <div class="cat-val">Reporting June 10. Firefly monetization data and any acceleration in Digital Experience revenue are the numbers to watch.</div>
+  </div>
+  <div class="cat-card">
+    <div class="cat-label">Institutional re-rating</div>
+    <div class="cat-val">Burry's disclosed position in April 2026 signals value-oriented buyers are stepping in. Analyst upgrades following CEO clarity could compress the discount rapidly.</div>
+  </div>
+</div>
+
+<div class="section-title">Risks worth watching</div>
+<div class="risks">
+  <div class="risk-item"><strong>CEO transition:</strong> Leadership changes during a pivotal AI product cycle create real execution risk. The wrong hire, or a prolonged search, could weigh on the stock for another 12 to 18 months regardless of the underlying business performance.</div>
+  <div class="risk-item"><strong>Low-end competition:</strong> Canva's continued growth and Google's expanding AI creative tools are real threats to new customer acquisition at the entry level. It does not threaten the enterprise base, but it limits the top of the funnel.</div>
+  <div class="risk-item"><strong>Anthropic AI design tool:</strong> Recent reports of Anthropic building an AI-native design tool represent an emerging and potentially underappreciated competitive vector, given how seriously the market takes anything AI-related right now.</div>
+</div>
+
+<div class="report-footer">
+  <span>Initiated April 15, 2026 &nbsp;&middot;&nbsp; Prices update live on page load</span>
+  <span class="footer-r">Price target: $353 &nbsp;&middot;&nbsp; Buy</span>
+</div>
+
+<div class="disclaimer">
+  This report is for informational purposes only and does not constitute financial advice. I may hold positions in securities discussed. Do your own research before making any investment decisions.
+</div>
+
+<script>
+const gc = 'rgba(0,0,0,0.06)';
+const tc = 'rgba(0,0,0,0.38)';
+
+const lineOpts = {
+  responsive: true, maintainAspectRatio: false,
+  plugins: {
+    legend: { display: false },
+    tooltip: { mode: 'index', intersect: false, backgroundColor: '#fff', titleColor: '#111', bodyColor: '#666', borderColor: '#e0e0e0', borderWidth: 1, padding: 10 }
+  },
+  scales: {
+    x: { grid: { display: false }, ticks: { color: tc, font: { size: 11, family: '-apple-system, sans-serif' } } },
+    y: { grid: { color: gc }, ticks: { color: tc, font: { size: 11, family: '-apple-system, sans-serif' } } }
+  }
+};
+
+const barOpts = (label) => ({
+  responsive: true, maintainAspectRatio: false,
+  plugins: {
+    legend: { display: false },
+    tooltip: { backgroundColor: '#fff', titleColor: '#111', bodyColor: '#666', borderColor: '#e0e0e0', borderWidth: 1, padding: 8 }
+  },
+  scales: {
+    x: { grid: { display: false }, ticks: { color: tc, font: { size: 11, family: '-apple-system, sans-serif' } } },
+    y: { grid: { color: gc }, ticks: { color: tc, font: { size: 11, family: '-apple-system, sans-serif' } }, title: { display: true, text: label, color: tc, font: { size: 10, family: '-apple-system, sans-serif' } } }
+  }
+});
+
+async function fetchAdbePrice() {
+  const priceEl = document.getElementById('live-price');
+  const metaEl = document.getElementById('price-meta');
+  try {
+    const proxy = 'https://corsproxy.io/?';
+    const url = 'https://query1.finance.yahoo.com/v8/finance/chart/ADBE?interval=1d&range=1d';
+    const res = await fetch(proxy + encodeURIComponent(url));
+    const data = await res.json();
+    const quote = data.chart.result[0].meta;
+    const price = quote.regularMarketPrice;
+    priceEl.textContent = `$${price.toFixed(2)}`;
+    const pt = 353;
+    const upside = ((pt - price) / price * 100).toFixed(1);
+    const upsideSign = upside >= 0 ? '+' : '';
+    document.getElementById('live-upside').textContent = `${upsideSign}${upside}%`;
+    const now = new Date();
+    const ts = now.toLocaleString('en-US', { month: 'short', day: 'numeric', year: 'numeric', hour: 'numeric', minute: '2-digit', timeZoneName: 'short' });
+    metaEl.textContent = `Last updated: ${ts}`;
+  } catch(e) {
+    priceEl.textContent = 'Price unavailable';
+    metaEl.textContent = 'Could not fetch live data';
+  }
+}
+fetchAdbePrice();
+
+new Chart(document.getElementById('adbePriceChart'), {
+  type: 'line',
+  data: {
+    labels: ['Jan 23','Apr 23','Jul 23','Oct 23','Jan 24','Apr 24','Jul 24','Oct 24','Jan 25','Apr 25','Jul 25','Oct 25','Jan 26','Apr 26'],
+    datasets: [{
+      data: [380, 490, 550, 600, 640, 490, 580, 510, 430, 360, 420, 310, 255, 240],
+      borderColor: '#BA7517', borderWidth: 2,
+      fill: true, backgroundColor: 'rgba(186,117,23,0.05)',
+      tension: 0.35, pointRadius: 0, pointHoverRadius: 4
+    }]
+  },
+  options: lineOpts
+});
+
+new Chart(document.getElementById('adbeRevChart'), {
+  type: 'bar',
+  data: {
+    labels: ['FY22', 'FY23', 'FY24', 'FY25'],
+    datasets: [{ data: [17.6, 19.4, 21.5, 23.8], backgroundColor: '#FAC775', borderRadius: 4, label: 'Revenue ($B)' }]
+  },
+  options: barOpts('Revenue ($B)')
+});
+
+new Chart(document.getElementById('adbeEpsChart'), {
+  type: 'bar',
+  data: {
+    labels: ['FY22', 'FY23', 'FY24', 'FY25'],
+    datasets: [{ data: [10.10, 11.82, 12.36, 16.70], backgroundColor: '#FAC775', borderRadius: 4, label: 'EPS ($)' }]
+  },
+  options: barOpts('EPS ($)')
+});
+</script>
+</body>
+</html>

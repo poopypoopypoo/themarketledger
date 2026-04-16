@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>META — The Market Ledger</title>
+<title>INTC — The Market Ledger</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
@@ -21,20 +21,11 @@
     padding: 2.5rem 1.5rem 4rem;
   }
 
-  /* Header */
   .report-header {
     border-bottom: 1px solid #e0e0e0;
     padding-bottom: 1.5rem;
     margin-bottom: 1.75rem;
   }
-  .breadcrumb {
-    font-size: 13px;
-    color: #888;
-    margin-bottom: 1.25rem;
-    letter-spacing: 0.02em;
-  }
-  .breadcrumb a { color: #888; text-decoration: none; }
-  .breadcrumb a:hover { color: #111; }
   .rh-top {
     display: flex;
     justify-content: space-between;
@@ -47,7 +38,7 @@
     width: 48px; height: 48px;
     border-radius: 8px;
     background: #E6F1FB;
-    color: #185FA5;
+    color: #0C447C;
     display: flex; align-items: center; justify-content: center;
     font-size: 11px; font-weight: 500;
     flex-shrink: 0;
@@ -59,13 +50,13 @@
     display: inline-block;
     font-size: 11px; font-weight: 500;
     padding: 4px 12px; border-radius: 20px;
-    background: #E6F1FB; color: #185FA5;
+    background: #E6F1FB; color: #0C447C;
     margin-bottom: 8px;
     font-family: -apple-system, sans-serif;
   }
   .price-curr { font-size: 26px; font-weight: 500; }
   .price-pt { font-size: 14px; color: #666; margin-top: 2px; }
-  .price-pt span { color: #185FA5; font-weight: 500; }
+  .price-pt span { color: #0C447C; font-weight: 500; }
   .thesis {
     font-size: 17px;
     color: #333;
@@ -74,7 +65,6 @@
     padding-top: 1.25rem;
   }
 
-  /* Metrics strip */
   .metrics-strip {
     display: grid;
     grid-template-columns: repeat(5, 1fr);
@@ -91,9 +81,8 @@
   .metric-cell:last-child { border-right: none; }
   .mc-label { font-size: 11px; color: #888; margin-bottom: 4px; font-family: -apple-system, sans-serif; text-transform: uppercase; letter-spacing: 0.05em; }
   .mc-val { font-size: 17px; font-weight: 500; }
-  .mc-val.up { color: #185FA5; }
+  .mc-val.dn { color: #0C447C; }
 
-  /* Section titles */
   .section-title {
     font-size: 11px;
     font-weight: 500;
@@ -107,17 +96,15 @@
     margin-top: 2rem;
   }
 
-  /* Charts */
   .chart-wrap { height: 200px; margin-bottom: 2rem; position: relative; }
   .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 2rem; }
   .bar-wrap { height: 170px; position: relative; }
   .chart-label { font-size: 13px; color: #888; font-family: -apple-system, sans-serif; margin-bottom: 6px; font-style: italic; }
 
-  /* Thesis pillars */
   .pillar { display: flex; gap: 14px; margin-bottom: 1.25rem; align-items: flex-start; }
   .pnum {
     width: 22px; height: 22px; border-radius: 50%;
-    background: #E6F1FB; color: #185FA5;
+    background: #E6F1FB; color: #0C447C;
     display: flex; align-items: center; justify-content: center;
     font-size: 11px; font-weight: 500;
     flex-shrink: 0; margin-top: 4px;
@@ -126,19 +113,16 @@
   .ptext { font-size: 16px; color: #333; line-height: 1.7; }
   .ptext strong { font-weight: 500; color: #111; }
 
-  /* Catalyst grid */
   .catalyst-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 2rem; }
   .cat-card { background: #fafaf8; border: 1px solid #e8e8e8; border-radius: 8px; padding: 12px 14px; }
   .cat-label { font-size: 10px; color: #888; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 5px; font-family: -apple-system, sans-serif; }
   .cat-val { font-size: 14px; color: #333; line-height: 1.5; }
 
-  /* Risks */
   .risks { border: 1px solid #e8e8e8; border-radius: 8px; overflow: hidden; margin-bottom: 2rem; }
   .risk-item { padding: 12px 16px; border-bottom: 1px solid #eee; font-size: 15px; color: #444; line-height: 1.6; }
   .risk-item:last-child { border-bottom: none; }
   .risk-item strong { color: #111; font-weight: 500; }
 
-  /* Footer */
   .report-footer {
     border-top: 1px solid #e0e0e0;
     padding-top: 1rem;
@@ -150,7 +134,7 @@
     color: #888;
     font-family: -apple-system, sans-serif;
   }
-  .footer-r { color: #185FA5; font-weight: 500; }
+  .footer-r { color: #0C447C; font-weight: 500; }
   .disclaimer {
     margin-top: 2.5rem;
     font-size: 13px;
@@ -174,98 +158,95 @@
 <body>
 
 <div class="report-header">
-  <div class="breadcrumb">
-    <a href="/">The Market Ledger</a> &nbsp;/&nbsp; <a href="/research">Research</a> &nbsp;/&nbsp; META
-  </div>
   <div class="rh-top">
     <div class="ticker-row">
       <div class="ticker-icon" style="background:none;padding:0;overflow:hidden;">
-        <img src="https://cdn.pixabay.com/photo/2021/12/14/22/29/meta-6871457_960_720.png" alt="Meta" style="width:48px;height:48px;object-fit:contain;">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/85/Intel_logo_2023.svg/1280px-Intel_logo_2023.svg.png" alt="Intel" style="width:48px;height:48px;object-fit:contain;">
       </div>
       <div>
-        <div class="ticker">Meta Platforms</div>
-        <div class="co-name">Social Media / Digital Advertising / AI &nbsp;&middot;&nbsp; NASDAQ: META</div>
+        <div class="ticker">Intel</div>
+        <div class="co-name">Semiconductors / Foundry &nbsp;&middot;&nbsp; NASDAQ: INTC</div>
       </div>
     </div>
     <div class="rh-right">
-      <div><span class="badge">Buy / Long</span></div>
+      <div><span class="badge">Sell / Short</span></div>
       <div class="price-curr" id="live-price">--</div>
       <div class="price-pt">
-        Price target: <span>$834</span> &nbsp;&middot;&nbsp; <span id="live-upside">+27%</span> upside
+        Price target: <span>$30</span> &nbsp;&middot;&nbsp; <span id="live-downside">~60%</span> downside
       </div>
       <div id="price-meta" style="font-size:12px;color:#888;margin-top:4px;font-family:-apple-system,sans-serif;"></div>
     </div>
   </div>
   <div class="thesis">
-    Meta printed $201 billion in revenue in 2025, growing 22% year over year, with 41% operating margins and earnings per share of $23.49. And yet the stock is sitting 28% below its August 2025 all-time high of $796, with the market broadly spooked by the scale of the company's AI infrastructure spending. That concern is real, but it is also, in my view, significantly overpriced into the stock. The Advantage+ AI ad suite is already running at a $60 billion annual run rate. The core advertising engine is not just holding up under the capex load; it is accelerating. At roughly 24x trailing earnings, you are buying one of the best businesses on the planet at a below-market multiple. That kind of setup does not come around often.
+    Intel has run up dramatically on the promise of a foundry turnaround, and the market has rewarded a story that has not yet shown up in the numbers. The company is posting negative GAAP earnings, burning $4.5 billion in levered free cash flow, operating at 34.8% gross margins against an industry average well above 50%, and losing CPU market share to AMD for the fourth consecutive year. Q1 2026 results beat on revenue but missed on GAAP EPS at -$0.12 versus -$0.09 expected. The stock trades at over 100x forward earnings. That is a premium multiple for a business that is, by every current financial metric, not performing like a premium business. The turnaround may eventually come. But the stock is already priced as though it already has.
   </div>
 </div>
 
 <div class="metrics-strip">
-  <div class="metric-cell"><div class="mc-label">Market Cap</div><div class="mc-val">$1.61T</div></div>
-  <div class="metric-cell"><div class="mc-label">Revenue (TTM)</div><div class="mc-val">$201B</div></div>
-  <div class="metric-cell"><div class="mc-label">Op. Margin</div><div class="mc-val">41%</div></div>
-  <div class="metric-cell"><div class="mc-label">Fwd P/E</div><div class="mc-val">~24x</div></div>
-  <div class="metric-cell"><div class="mc-label">Price Target</div><div class="mc-val up">$834</div></div>
+  <div class="metric-cell"><div class="mc-label">Market Cap</div><div class="mc-val">$320B</div></div>
+  <div class="metric-cell"><div class="mc-label">Revenue (TTM)</div><div class="mc-val">$52.9B</div></div>
+  <div class="metric-cell"><div class="mc-label">Gross Margin</div><div class="mc-val dn">34.8%</div></div>
+  <div class="metric-cell"><div class="mc-label">GAAP EPS (TTM)</div><div class="mc-val dn">-$0.06</div></div>
+  <div class="metric-cell"><div class="mc-label">Price Target</div><div class="mc-val dn">$30</div></div>
 </div>
 
 <div class="section-title">Price history (2023 to 2026)</div>
-<div class="chart-wrap"><canvas id="metaPriceChart"></canvas></div>
+<div class="chart-wrap"><canvas id="intcPriceChart"></canvas></div>
 
-<div class="section-title">Revenue and earnings growth</div>
+<div class="section-title">Revenue and gross margin deterioration</div>
 <div class="two-col">
   <div>
     <div class="chart-label">Annual revenue ($B)</div>
-    <div class="bar-wrap"><canvas id="metaRevChart"></canvas></div>
+    <div class="bar-wrap"><canvas id="intcRevChart"></canvas></div>
   </div>
   <div>
-    <div class="chart-label">Diluted EPS ($)</div>
-    <div class="bar-wrap"><canvas id="metaEpsChart"></canvas></div>
+    <div class="chart-label">Gross margin (%)</div>
+    <div class="bar-wrap"><canvas id="intcGmChart"></canvas></div>
   </div>
 </div>
 
-<div class="section-title">Investment thesis</div>
+<div class="section-title">Short thesis</div>
 <div class="pillars" style="margin-bottom:2rem;">
   <div class="pillar">
     <div class="pnum">1</div>
-    <div class="ptext"><strong>The ad business is compounding faster than the market thinks.</strong> Meta crossed $200 billion in annual revenue last year, growing 22%, and Q4 2025 alone came in at $59.9 billion, ahead of consensus. Q1 2026 guidance of $53.5 to $56.5 billion is again ahead of what analysts expected. The Advantage+ AI ad suite is at a $60 billion annual run rate and driving measurable improvement in return on ad spend for advertisers, which is the metric that keeps budgets sticky. When advertisers see better results, they spend more. That feedback loop is working.</div>
+    <div class="ptext"><strong>The foundry is burning cash, not generating it.</strong> Intel Foundry lost approximately $2.5 billion in Q4 2025 alone, with cumulative 2025 foundry operating losses around $10.3 billion. Nearly all of that revenue comes from internal orders — external customer wins are negligible. The entire bull case rests on Intel becoming a credible contract manufacturer for outside customers at scale. That has not happened. Q1 2026 foundry guidance called for double-digit sequential revenue growth, but gross margin guidance of roughly 34.5% shows the profitability problem is nowhere near resolved.</div>
   </div>
   <div class="pillar">
     <div class="pnum">2</div>
-    <div class="ptext"><strong>You are paying a below-average multiple for an above-average business.</strong> At roughly 24x trailing earnings, Meta trades at a discount to the S&P 500 average, despite significantly faster earnings growth and 41% operating margins. Alphabet trades at 20x. Microsoft trades at 33x. On a price-to-earnings-growth basis, Meta is one of the cheapest mega-cap technology names in the world right now. The 28% drawdown from the August 2025 high is a valuation dislocation, not a sign of anything fundamentally wrong with the business.</div>
+    <div class="ptext"><strong>The core business is losing ground on both fronts.</strong> Intel's Client Computing Group, which is roughly 60% of total revenue, declined 7% year over year in Q4 2025 while AMD's client segment grew 34% in the same quarter. In Data Center, Intel faces intensifying competition from AMD EPYC and custom silicon from hyperscalers who are increasingly designing their own chips. Neither segment has a credible near-term reversal catalyst, and the combined revenue trajectory has been declining since 2021.</div>
   </div>
   <div class="pillar">
     <div class="pnum">3</div>
-    <div class="ptext"><strong>AI is adding revenue, not just cost.</strong> Meta's in-house Llama model cuts external API dependency and is embedded across all its consumer products. Threads hit 400 million monthly active users in late 2025, up from 320 million the year prior, and monetization has not even begun yet. Meta is also projected to surpass Alphabet in global digital advertising revenue by end of 2026. The market is treating the $115 to $135 billion capex guide as a red flag. I think it is the reason the stock is worth more in three years than it is today.</div>
+    <div class="ptext"><strong>The valuation assumes a perfect outcome that has not been earned.</strong> At over 100x forward earnings for a company with negative GAAP EPS, negative free cash flow, and sub-35% gross margins, the stock is priced for flawless execution of a transformation that is still in its earliest stages. The Nvidia equity stake is financial in nature, not a manufacturing commitment. Nvidia has no incentive to pull workloads from TSMC until Intel 18A proves itself at scale, and that proof has not arrived. Any foundry guidance miss, and Q1 results suggest that risk remains real, will reprice this stock quickly.</div>
   </div>
 </div>
 
-<div class="section-title">Key catalysts</div>
+<div class="section-title">Key catalysts for the short</div>
 <div class="catalyst-grid">
   <div class="cat-card">
-    <div class="cat-label">Q1 2026 earnings</div>
-    <div class="cat-val">April 29 report. First real test of Advantage+ AI ad revenue at scale. A beat here likely closes part of the valuation gap quickly.</div>
+    <div class="cat-label">Q1 2026 results (reported)</div>
+    <div class="cat-val">Revenue beat consensus but GAAP EPS missed at -$0.12. Earnings quality problem remains unresolved heading into Q2.</div>
   </div>
   <div class="cat-card">
-    <div class="cat-label">Advertising share shift</div>
-    <div class="cat-val">Meta is projected to surpass Alphabet in global digital ad revenue by end of 2026. If that happens on schedule, expect a meaningful re-rating.</div>
+    <div class="cat-label">No major external foundry win</div>
+    <div class="cat-val">Failure to announce a significant outside customer by mid-2026 would directly confirm the bear thesis and likely trigger a re-rating.</div>
   </div>
   <div class="cat-card">
-    <div class="cat-label">Threads monetization</div>
-    <div class="cat-val">400 million MAUs and still no ads. When Threads turns on monetization, it is pure incremental revenue with near-zero incremental cost.</div>
+    <div class="cat-label">AMD share data</div>
+    <div class="cat-val">AMD's upcoming earnings will show continued CPU share gains. Each quarter of data makes Intel's client recovery narrative harder to sustain.</div>
   </div>
 </div>
 
-<div class="section-title">Risks worth watching</div>
+<div class="section-title">Risks to the short</div>
 <div class="risks">
-  <div class="risk-item"><strong>Capex discipline:</strong> The $115 to $135 billion 2026 capex guide is a big number, up roughly 73% from the $72 billion spent in 2025. If AI monetization does not start showing up clearly in margins by late 2026, investors will lose patience and the multiple will compress further.</div>
-  <div class="risk-item"><strong>Reality Labs losses:</strong> The division has now accumulated $83.6 billion in cumulative losses, with another $19 billion expected in 2026. There is no near-term path to profitability here. It is a long-term bet that Zuckerberg is making with shareholder capital, and not everyone is comfortable with that.</div>
-  <div class="risk-item"><strong>Regulatory and legal exposure:</strong> The FTC antitrust case and ongoing legal battles across Europe and multiple US states are live overhangs. None of these are likely to cause existential damage, but they create headline risk and could cap the multiple at certain points.</div>
+  <div class="risk-item"><strong>CHIPS Act backstop:</strong> Government subsidies provide a financial floor that could extend Intel's runway well beyond what the fundamentals alone would support, delaying the re-rating thesis by a year or more.</div>
+  <div class="risk-item"><strong>Nvidia equity signal:</strong> The market has read Nvidia's equity stake as a vote of confidence in Intel's foundry capabilities. If Nvidia publicly commits manufacturing volume to Intel 18A, the multiple will expand significantly before it contracts.</div>
+  <div class="risk-item"><strong>18A yield breakthrough:</strong> A credible announcement of improved 18A yields alongside a major external customer win would be the single event most likely to break the short thesis entirely. This remains a low probability but non-trivial risk.</div>
 </div>
 
 <div class="report-footer">
-  <span>Initiated March 22, 2026 &nbsp;&middot;&nbsp; Prices live updating</span>
-  <span class="footer-r">Price target: $834 &nbsp;&middot;&nbsp; Buy</span>
+  <span>Initiated April 15, 2026 &nbsp;&middot;&nbsp; Prices update live on page load</span>
+  <span class="footer-r">Price target: $30 &nbsp;&middot;&nbsp; Sell</span>
 </div>
 
 <div class="disclaimer">
@@ -300,62 +281,60 @@ const barOpts = (label) => ({
   }
 });
 
-// Live price fetch via Yahoo Finance proxy
-async function fetchMetaPrice() {
+async function fetchIntcPrice() {
   const priceEl = document.getElementById('live-price');
   const metaEl = document.getElementById('price-meta');
   try {
     const proxy = 'https://corsproxy.io/?';
-    const url = 'https://query1.finance.yahoo.com/v8/finance/chart/META?interval=1d&range=1d';
+    const url = 'https://query1.finance.yahoo.com/v8/finance/chart/INTC?interval=1d&range=1d';
     const res = await fetch(proxy + encodeURIComponent(url));
     const data = await res.json();
     const quote = data.chart.result[0].meta;
     const price = quote.regularMarketPrice;
     priceEl.textContent = `$${price.toFixed(2)}`;
-    const pt = 834;
-    const upside = ((pt - price) / price * 100).toFixed(1);
-    const upsideSign = upside >= 0 ? '+' : '';
-    document.getElementById('live-upside').textContent = `${upsideSign}${upside}%`;
+    const pt = 30;
+    const downside = ((pt - price) / price * 100).toFixed(1);
+    document.getElementById('live-downside').textContent = `${downside}%`;
     const now = new Date();
-    const ts = now.toLocaleString('en-US', { month:'short', day:'numeric', year:'numeric', hour:'numeric', minute:'2-digit', timeZoneName:'short' });
-    metaEl.textContent = `Price last updated: ${ts}`;
+    const ts = now.toLocaleString('en-US', { month: 'short', day: 'numeric', year: 'numeric', hour: 'numeric', minute: '2-digit', timeZoneName: 'short' });
+    metaEl.textContent = `Last updated: ${ts}`;
   } catch(e) {
     priceEl.textContent = 'Price unavailable';
     metaEl.textContent = 'Could not fetch live data';
   }
 }
-fetchMetaPrice();
+fetchIntcPrice();
 
-new Chart(document.getElementById('metaPriceChart'), {
+new Chart(document.getElementById('intcPriceChart'), {
   type: 'line',
   data: {
     labels: ['Jan 23','Apr 23','Jul 23','Oct 23','Jan 24','Apr 24','Jul 24','Oct 24','Jan 25','Apr 25','Jul 25','Oct 25','Jan 26','Apr 26'],
     datasets: [{
-      data: [155, 210, 290, 330, 395, 450, 510, 580, 620, 545, 750, 680, 655, 657],
-      borderColor: '#185FA5', borderWidth: 2,
-      fill: true, backgroundColor: 'rgba(59,109,17,0.05)',
+      data: [28, 34, 38, 44, 48, 32, 30, 22, 18, 25, 38, 32, 50, 75],
+      borderColor: '#0C447C', borderWidth: 2,
+      fill: true, backgroundColor: 'rgba(163,45,45,0.05)',
       tension: 0.35, pointRadius: 0, pointHoverRadius: 4
     }]
   },
   options: lineOpts
 });
 
-new Chart(document.getElementById('metaRevChart'), {
+new Chart(document.getElementById('intcRevChart'), {
   type: 'bar',
   data: {
     labels: ['2022', '2023', '2024', '2025'],
-    datasets: [{ data: [117, 135, 165, 201], backgroundColor: '#85B7EB', borderRadius: 4, label: 'Revenue ($B)' }]
+    datasets: [{ data: [63.1, 54.2, 53.1, 52.9], backgroundColor: '#85B7EB', borderRadius: 4, label: 'Revenue ($B)' }]
   },
   options: barOpts('Revenue ($B)')
 });
 
-new Chart(document.getElementById('metaEpsChart'), {
+new Chart(document.getElementById('intcGmChart'), {
   type: 'bar',
   data: {
     labels: ['2022', '2023', '2024', '2025'],
-    datasets: [{ data: [8.59, 14.87, 22.00, 23.49], backgroundColor: '#85B7EB', borderRadius: 4, label: 'EPS ($)' }]
+    datasets: [{ data: [49.1, 44.9, 40.5, 34.8], backgroundColor: '#85B7EB', borderRadius: 4, label: 'Gross Margin (%)' }]
   },
-  options: barOpts('EPS ($)')
+  options: barOpts('Gross Margin (%)')
 });
 </script>
 </body>

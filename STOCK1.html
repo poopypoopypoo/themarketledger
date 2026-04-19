@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Intel — Stocks to Watch — The Market Ledger</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'EB Garamond', Georgia, serif;
+    background: #fff;
+    max-width: 520px;
+    margin: 0 auto;
+    padding: 0;
+    color: #111;
+  }
+  .section-label {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #999;
+    font-family: -apple-system, sans-serif;
+    margin-bottom: 10px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #e8e8e8;
+  }
+  .card { border: 1px solid #e0e0e0; border-radius: 10px; overflow: hidden; }
+  .card-header {
+    padding: 1rem 1.25rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    border-bottom: 1px solid #eee;
+    background: #0C447C;
+  }
+  .left-block { display: flex; align-items: center; gap: 10px; }
+  .logo-wrap {
+    width: 36px; height: 36px;
+    border-radius: 6px; overflow: hidden;
+    background: #fff;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .logo-wrap img { width: 36px; height: 36px; object-fit: contain; }
+  .ticker-name { font-size: 15px; color: #fff; font-weight: 500; }
+  .ticker-sub { font-size: 11px; color: rgba(255,255,255,0.55); font-family: -apple-system, sans-serif; }
+  .right-block { text-align: right; flex-shrink: 0; }
+  .badge {
+    display: inline-block;
+    font-size: 11px; font-weight: 500;
+    padding: 3px 10px; border-radius: 4px;
+    font-family: -apple-system, sans-serif;
+    margin-bottom: 5px;
+    background: rgba(240,149,149,0.2);
+    color: #f09595;
+    border: 1px solid rgba(240,149,149,0.3);
+  }
+  .live-price { font-size: 18px; font-weight: 500; color: #fff; }
+  .price-meta { font-size: 11px; color: rgba(255,255,255,0.45); font-family: -apple-system, sans-serif; }
+
+  .metrics-row {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0,1fr));
+    gap: 1px;
+    background: #e8e8e8;
+    border-bottom: 1px solid #e0e0e0;
+  }
+  .metric { background: #fafaf8; padding: 10px 12px; }
+  .metric-label { font-size: 9px; text-transform: uppercase; letter-spacing: 0.06em; color: #999; font-family: -apple-system, sans-serif; margin-bottom: 3px; }
+  .metric-val { font-size: 14px; font-weight: 500; color: #111; }
+  .metric-val.dn { color: #A32D2D; }
+
+  .body { padding: 1rem 1.25rem; }
+  .thesis { font-size: 14px; color: #444; line-height: 1.65; margin-bottom: 1rem; }
+  .pillars { border-top: 1px solid #eee; padding-top: 0.75rem; }
+  .pillar { display: flex; gap: 8px; align-items: flex-start; font-size: 13px; color: #444; line-height: 1.5; padding: 4px 0; }
+  .dot { width: 6px; height: 6px; border-radius: 50%; margin-top: 5px; flex-shrink: 0; background: #A32D2D; }
+
+  .card-footer {
+    border-top: 1px solid #e8e8e8;
+    padding: 8px 1.25rem;
+    display: flex;
+    justify-content: space-between;
+    font-size: 11px;
+    color: #aaa;
+    font-family: -apple-system, sans-serif;
+    background: #fafaf8;
+  }
+  .pt-label { color: #A32D2D; font-weight: 500; }
+</style>
+</head>
+<body>
+
+<div class="section-label">Stocks to watch</div>
+
+<div class="card">
+  <div class="card-header">
+    <div class="left-block">
+      <div class="logo-wrap">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/85/Intel_logo_2023.svg/1280px-Intel_logo_2023.svg.png" alt="Intel">
+      </div>
+      <div>
+        <div class="ticker-name">Intel &nbsp;<span style="font-size:13px;font-weight:400;opacity:0.7;">INTC</span></div>
+        <div class="ticker-sub">Semiconductors &nbsp;&middot;&nbsp; NASDAQ</div>
+      </div>
+    </div>
+    <div class="right-block">
+      <div><span class="badge">Sell / Short</span></div>
+      <div class="live-price" id="intc-price">--</div>
+      <div class="price-meta" id="intc-meta"></div>
+    </div>
+  </div>
+
+  <div class="metrics-row">
+    <div class="metric">
+      <div class="metric-label">Fwd P/E</div>
+      <div class="metric-val dn">125x</div>
+    </div>
+    <div class="metric">
+      <div class="metric-label">Gross margin</div>
+      <div class="metric-val dn">34.8%</div>
+    </div>
+    <div class="metric">
+      <div class="metric-label">Price target</div>
+      <div class="metric-val dn">$30</div>
+    </div>
+  </div>
+
+  <div class="body">
+    <div class="thesis">Intel has rallied sharply on a foundry turnaround narrative, but the financials have not kept pace with the story. The company is posting negative GAAP earnings, burning cash, and losing CPU share to AMD for the fourth consecutive year. At over 100x forward earnings, the stock is priced for flawless execution of a transformation that is still in its earliest stages.</div>
+    <div class="pillars">
+      <div class="pillar"><div class="dot"></div>Intel Foundry lost approximately $10.3B in cumulative 2025 operating losses. External customer revenue remains negligible.</div>
+      <div class="pillar"><div class="dot"></div>Client Computing Group declined 7% YoY in Q4 2025 while AMD's client segment grew 34% in the same quarter.</div>
+      <div class="pillar"><div class="dot"></div>Q1 2026 GAAP EPS missed at -$0.12 vs. -$0.09 expected. Earnings quality problem remains unresolved.</div>
+    </div>
+  </div>
+
+  <div class="card-footer">
+    <span>Initiated April 2026 &nbsp;&middot;&nbsp; The Market Ledger</span>
+    <span class="pt-label">PT: $30 &nbsp;&middot;&nbsp; <span id="intc-downside">~60%</span> downside</span>
+  </div>
+</div>
+
+<script>
+async function fetchPrice() {
+  try {
+    const proxy = 'https://corsproxy.io/?';
+    const url = 'https://query1.finance.yahoo.com/v8/finance/chart/INTC?interval=1d&range=1d';
+    const res = await fetch(proxy + encodeURIComponent(url));
+    const data = await res.json();
+    const price = data.chart.result[0].meta.regularMarketPrice;
+    document.getElementById('intc-price').textContent = '$' + price.toFixed(2);
+    const diff = ((30 - price) / price * 100).toFixed(1);
+    document.getElementById('intc-downside').textContent = diff + '%';
+    const now = new Date();
+    const ts = now.toLocaleString('en-US', { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit', timeZoneName: 'short' });
+    document.getElementById('intc-meta').textContent = 'Updated ' + ts;
+  } catch(e) {
+    document.getElementById('intc-price').textContent = '--';
+  }
+}
+fetchPrice();
+</script>
+</body>
+</html>

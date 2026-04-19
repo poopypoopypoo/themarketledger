@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Weekly Market Update — April 14-17, 2026 — The Market Ledger</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'EB Garamond', Georgia, serif;
+    font-size: 17px;
+    line-height: 1.7;
+    color: #111111;
+    background: #ffffff;
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 0;
+  }
+
+  .page-header {
+    background: #ffffff;
+    padding: 2rem 2rem 1.5rem;
+    border-bottom: 1px solid #e0e0e0;
+  }
+  .pub-line {
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    color: #888888;
+    font-family: -apple-system, sans-serif;
+    text-transform: uppercase;
+    margin-bottom: 0.75rem;
+  }
+  .top-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+  .headline {
+    font-size: 28px;
+    font-weight: 400;
+    color: #111111;
+    line-height: 1.25;
+    margin-bottom: 0.5rem;
+  }
+  .subhead {
+    font-size: 16px;
+    color: #666666;
+    font-style: italic;
+    line-height: 1.5;
+    max-width: 560px;
+  }
+  .date-pill {
+    background: #f0eeeb;
+    border: 1px solid #d0d0d0;
+    border-radius: 6px;
+    padding: 8px 14px;
+    font-size: 12px;
+    color: #888888;
+    font-family: -apple-system, sans-serif;
+    text-align: right;
+    flex-shrink: 0;
+    white-space: nowrap;
+  }
+  .milestone-bar {
+    margin-top: 1.25rem;
+    background: #eaf7f0;
+    border: 1px solid #a8dfc4;
+    border-radius: 6px;
+    padding: 10px 16px;
+    font-size: 14px;
+    color: #7ec8a0;
+    font-family: -apple-system, sans-serif;
+    display: inline-block;
+  }
+
+  .index-strip {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 1px;
+    background: #e8e8e8;
+    border-top: 1px solid #e8e8e8;
+    border-bottom: 1px solid #e8e8e8;
+  }
+  .index-cell {
+    background: #f7f5f2;
+    padding: 1.1rem 1.25rem;
+  }
+  .idx-name {
+    font-size: 10px;
+    color: #888888;
+    font-family: -apple-system, sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    margin-bottom: 5px;
+  }
+  .idx-val {
+    font-size: 20px;
+    font-weight: 500;
+    color: #111111;
+    margin-bottom: 3px;
+  }
+  .idx-chg {
+    font-size: 13px;
+    font-family: -apple-system, sans-serif;
+  }
+  .up { color: #7ec8a0; }
+  .dn { color: #e07575; }
+
+  .body {
+    background: #ffffff;
+    padding: 2rem;
+  }
+
+  .section-label {
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #888888;
+    font-family: -apple-system, sans-serif;
+    margin-bottom: 12px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #e8e8e8;
+  }
+
+  .chart-wrap {
+    position: relative;
+    height: 180px;
+    margin-bottom: 2rem;
+  }
+
+  .commentary {
+    font-size: 16px;
+    color: #444444;
+    line-height: 1.8;
+    margin-bottom: 2rem;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid #e8e8e8;
+  }
+  .commentary p { margin-bottom: 1rem; }
+  .commentary p:last-child { margin-bottom: 0; }
+
+  .story-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 2rem;
+  }
+  .story-card {
+    background: #f7f5f2;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 14px 16px;
+  }
+  .story-tag {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    font-family: -apple-system, sans-serif;
+    margin-bottom: 6px;
+    font-weight: 500;
+  }
+  .story-tag.bull { color: #7ec8a0; }
+  .story-tag.bear { color: #e07575; }
+  .story-tag.neutral { color: #888888; }
+  .story-title {
+    font-size: 15px;
+    color: #222222;
+    line-height: 1.55;
+  }
+
+  .sector-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 10px;
+  }
+  .sector-name {
+    font-size: 13px;
+    color: #666666;
+    font-family: -apple-system, sans-serif;
+    width: 130px;
+    flex-shrink: 0;
+  }
+  .bar-track {
+    flex: 1;
+    height: 5px;
+    background: #f0eeeb;
+    border-radius: 3px;
+    overflow: hidden;
+  }
+  .bar-fill { height: 100%; border-radius: 3px; }
+  .sector-pct {
+    font-size: 13px;
+    font-family: -apple-system, sans-serif;
+    width: 52px;
+    text-align: right;
+    flex-shrink: 0;
+  }
+
+  .what-to-watch {
+    margin-top: 2rem;
+    padding-top: 2rem;
+    border-top: 1px solid #e8e8e8;
+  }
+  .watch-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 10px;
+    margin-top: 12px;
+  }
+  .watch-card {
+    background: #f7f5f2;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 12px 14px;
+  }
+  .watch-label {
+    font-size: 10px;
+    color: #888888;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    font-family: -apple-system, sans-serif;
+    margin-bottom: 5px;
+  }
+  .watch-val {
+    font-size: 14px;
+    color: #222222;
+    line-height: 1.5;
+  }
+
+  .page-footer {
+    background: #ffffff;
+    border-top: 1px solid #e8e8e8;
+    padding: 1rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .footer-l { font-size: 12px; color: #888888; font-family: -apple-system, sans-serif; }
+  .footer-r { font-size: 12px; color: #888888; font-family: -apple-system, sans-serif; font-style: italic; }
+
+  @media (max-width: 600px) {
+    .top-row { flex-direction: column; }
+    .index-strip { grid-template-columns: repeat(2, 1fr); }
+    .story-grid { grid-template-columns: 1fr; }
+    .watch-grid { grid-template-columns: 1fr; }
+    .body { padding: 1.5rem 1rem; }
+    .page-header { padding: 1.5rem 1rem 1.25rem; }
+  }
+</style>
+</head>
+<body>
+
+<div class="page-header">
+  <div class="pub-line">The Market Ledger &nbsp;&middot;&nbsp; Weekly market update</div>
+  <div class="top-row">
+    <div>
+      <div class="headline">S&P 500 crosses 7,000 for the first time</div>
+      <div class="subhead">A historic week for U.S. equities. Despite significant geopolitical headwinds, the S&P 500 crossed 7,000 for the first time, capping its third consecutive week of gains above 3% as tech stocks reclaimed leadership.</div>
+    </div>
+    <div class="date-pill">Week of<br>Apr 13 to 17, 2026<br></div>
+  </div>
+  <div class="milestone-bar">New all-time high: 7,126.06 &nbsp;&middot;&nbsp; Closed at a record on Friday, Apr 17</div>
+</div>
+
+<div class="index-strip">
+  <div class="index-cell">
+    <div class="idx-name">S&P 500</div>
+    <div class="idx-val">7,126</div>
+    <div class="idx-chg up">+5.9% on week</div>
+  </div>
+  <div class="index-cell">
+    <div class="idx-name">Nasdaq</div>
+    <div class="idx-val">24,468</div>
+    <div class="idx-chg up">+7.0% on week</div>
+  </div>
+  <div class="index-cell">
+    <div class="idx-name">Dow Jones</div>
+    <div class="idx-val">49,447</div>
+    <div class="idx-chg up">+1.8% on week</div>
+  </div>
+  <div class="index-cell">
+    <div class="idx-name">VIX (Fear)</div>
+    <div class="idx-val">17.48</div>
+    <div class="idx-chg dn">-2.6% (falling)</div>
+  </div>
+</div>
+
+<div class="body">
+
+  <div class="section-label" style="margin-bottom:12px;">S&P 500 daily closes &nbsp;&middot;&nbsp; Week of April 13 to 17</div>
+  <div class="chart-wrap">
+    <canvas id="spxChart" role="img" aria-label="S&P 500 daily closes: Monday 6,967, Tuesday 7,023, Wednesday 7,023, Thursday 7,126, Friday 7,126">S&P 500 closes: Mon 6,737 / Tue 6,967 / Wed 7,023 / Thu 7,023 / Fri 7,126. Market closed Saturday.</canvas>
+  </div>
+
+  <div class="section-label">Weekly commentary</div>
+  <div class="commentary">
+    <p>On Tuesday, April 15, the S&P 500 closed at 7,022.95, crossing 7,000 for the first time in its history. By Friday the index had extended further to 7,126. The move represents a full recovery from the Iran war-driven selloff that pushed the index to its March lows, completed in just 11 trading sessions.</p>
+    <p>Markets absorbed considerable geopolitical stress to open the week. A failed U.S.-Iran ceasefire and a naval blockade of the Strait of Hormuz briefly pushed oil above $100 a barrel. By Friday, Iran announced the strait was reopening to non-Iranian commercial vessels, crude fell sharply, and the index closed at a new record. The resilience in the face of that headline risk reflects genuine underlying demand from institutional buyers.</p>
+    <p>Technology led the advance. The Nasdaq gained 7% on the week, with ServiceNow and Datadog each surging over 12%. Nvidia extended its run to 11 consecutive positive sessions, a record streak. The rotation back into growth from the value-led start to the year is now nearly complete, with growth outperforming value by over 11% from the March bottom.</p>
+  </div>
+
+  <div class="section-label">Key stories</div>
+  <div class="story-grid">
+    <div class="story-card">
+      <div class="story-tag bull">Historic milestone</div>
+      <div class="story-title">The S&P 500 closed above 7,000 for the first time in its history on April 15, completing a V-shaped recovery from the March lows in just 11 sessions.</div>
+    </div>
+    <div class="story-card">
+      <div class="story-tag bull">Tech leadership</div>
+      <div class="story-title">Nasdaq gained 7% on the week. ServiceNow and Datadog each surged over 12%. Nvidia extended its winning streak to 11 consecutive sessions, its longest ever recorded.</div>
+    </div>
+    <div class="story-card">
+      <div class="story-tag neutral">Geopolitical</div>
+      <div class="story-title">Iran reopened the Strait of Hormuz to non-Iranian commercial vessels on Friday, sending crude oil down 9.4% and removing the most significant macro overhang markets have faced in months.</div>
+    </div>
+    <div class="story-card">
+      <div class="story-tag neutral">Earnings</div>
+      <div class="story-title">Bank of America, JPMorgan, Wells Fargo, Morgan Stanley, and Citigroup all reported Q1 beats. Analysts now project 18% full-year S&P 500 earnings growth for 2026, with the forward P/E sitting at 20.9x.</div>
+    </div>
+    <div class="story-card">
+      <div class="story-tag bear">Watch</div>
+      <div class="story-title">Netflix fell over 10% after Q2 guidance disappointed. Consumer confidence hit a record low per the University of Michigan survey, with low-income spending continuing to weaken despite the broader market strength.</div>
+    </div>
+    <div class="story-card">
+      <div class="story-tag bear">Fed risk</div>
+      <div class="story-title">President Trump stated he would remove Fed Chair Powell if he does not step aside when his term expires next month. Markets absorbed the comment without significant reaction, though any genuine threat to Fed independence warrants close attention.</div>
+    </div>
+  </div>
+
+  <div class="section-label">Sector performance (week)</div>
+  <div style="margin-bottom:2rem;">
+    <div class="sector-row">
+      <div class="sector-name">Technology</div>
+      <div class="bar-track"><div class="bar-fill" style="width:88%;background:#7ec8a0;"></div></div>
+      <div class="sector-pct up">+7.5%</div>
+    </div>
+    <div class="sector-row">
+      <div class="sector-name">Nasdaq comp.</div>
+      <div class="bar-track"><div class="bar-fill" style="width:82%;background:#7ec8a0;"></div></div>
+      <div class="sector-pct up">+7.0%</div>
+    </div>
+    <div class="sector-row">
+      <div class="sector-name">S&P 500</div>
+      <div class="bar-track"><div class="bar-fill" style="width:70%;background:#7ec8a0;"></div></div>
+      <div class="sector-pct up">+5.9%</div>
+    </div>
+    <div class="sector-row">
+      <div class="sector-name">Small caps</div>
+      <div class="bar-track"><div class="bar-fill" style="width:25%;background:#7ec8a0;"></div></div>
+      <div class="sector-pct up">+2.1%</div>
+    </div>
+    <div class="sector-row">
+      <div class="sector-name">Dow Jones</div>
+      <div class="bar-track"><div class="bar-fill" style="width:21%;background:#7ec8a0;"></div></div>
+      <div class="sector-pct up">+1.8%</div>
+    </div>
+    <div class="sector-row">
+      <div class="sector-name">Energy</div>
+      <div class="bar-track"><div class="bar-fill" style="width:15%;background:#e07575;"></div></div>
+      <div class="sector-pct dn">-8.6%</div>
+    </div>
+    <div class="sector-row">
+      <div class="sector-name">Crude oil</div>
+      <div class="bar-track"><div class="bar-fill" style="width:80%;background:#e07575;"></div></div>
+      <div class="sector-pct dn">-9.4%</div>
+    </div>
+  </div>
+
+  <div class="what-to-watch">
+    <div class="section-label">What to watch next week</div>
+    <div class="watch-grid">
+      <div class="watch-card">
+        <div class="watch-label">Earnings</div>
+        <div class="watch-val">93 S&P 500 companies report Q1 results, including 7 Dow components. Earnings season accelerates meaningfully from here.</div>
+      </div>
+      <div class="watch-card">
+        <div class="watch-label">Fed independence</div>
+        <div class="watch-val">Any escalation in Trump's comments regarding Powell would likely pressure bond markets before equities. The 10-year yield is the key indicator to watch.</div>
+      </div>
+      <div class="watch-card">
+        <div class="watch-label">Iran deal</div>
+        <div class="watch-val">A second round of U.S.-Iran negotiations is being considered. A formal agreement would likely extend the equity rally and push energy prices lower.</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="page-footer">
+  <span class="footer-l">The Market Ledger &nbsp;&middot;&nbsp; Week ending April 17, 2026</span>
+  <span class="footer-r">For informational purposes only. Not financial advice.</span>
+</div>
+
+<script>
+new Chart(document.getElementById('spxChart'), {
+  type: 'line',
+  data: {
+    labels: ['Mon Apr 13', 'Tue Apr 14', 'Wed Apr 15', 'Thu Apr 16', 'Fri Apr 17'],
+    datasets: [{
+      data: [6737, 6967, 7023, 7023, 7126],
+      borderColor: '#7ec8a0',
+      borderWidth: 2.5,
+      fill: true,
+      backgroundColor: 'rgba(126,200,160,0.07)',
+      tension: 0.3,
+      pointRadius: 5,
+      pointBackgroundColor: '#7ec8a0',
+      pointBorderColor: '#ffffff',
+      pointBorderWidth: 2,
+      pointHoverRadius: 7,
+      label: 'S&P 500 close'
+    }]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: { display: false },
+      tooltip: {
+        backgroundColor: '#ffffff',
+        titleColor: '#111111',
+        bodyColor: '#666666',
+        borderColor: '#e0e0e0',
+        borderWidth: 1,
+        padding: 12,
+        callbacks: {
+          label: ctx => ' ' + ctx.parsed.y.toLocaleString()
+        }
+      }
+    },
+    scales: {
+      x: {
+        grid: { display: false },
+        ticks: { color: 'rgba(0,0,0,0.4)', font: { size: 11, family: '-apple-system, sans-serif' } }
+      },
+      y: {
+        grid: { color: 'rgba(0,0,0,0.06)' },
+        ticks: {
+          color: 'rgba(0,0,0,0.4)',
+          font: { size: 11, family: '-apple-system, sans-serif' },
+          callback: v => v.toLocaleString()
+        },
+        min: 6850,
+        max: 7200
+      }
+    }
+  }
+});
+</script>
+</body>
+</html>

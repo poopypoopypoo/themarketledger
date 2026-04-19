@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Constellation Brands — Stocks to Watch — The Market Ledger</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'EB Garamond', Georgia, serif;
+    background: #fff;
+    max-width: 520px;
+    margin: 0 auto;
+    padding: 0;
+    color: #111;
+  }
+  .section-label {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #999;
+    font-family: -apple-system, sans-serif;
+    margin-bottom: 10px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #e8e8e8;
+  }
+  .card { border: 1px solid #e0e0e0; border-radius: 10px; overflow: hidden; }
+  .card-header {
+    padding: 1rem 1.25rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    border-bottom: 1px solid #eee;
+    background: #2a1a1a;
+  }
+  .left-block { display: flex; align-items: center; gap: 10px; }
+  .logo-wrap {
+    width: 36px; height: 36px;
+    border-radius: 6px; overflow: hidden;
+    background: #fff;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .logo-wrap img { width: 36px; height: 36px; object-fit: contain; }
+  .ticker-name { font-size: 15px; color: #fff; font-weight: 500; }
+  .ticker-sub { font-size: 11px; color: rgba(255,255,255,0.55); font-family: -apple-system, sans-serif; }
+  .right-block { text-align: right; flex-shrink: 0; }
+  .badge {
+    display: inline-block;
+    font-size: 11px; font-weight: 500;
+    padding: 3px 10px; border-radius: 4px;
+    font-family: -apple-system, sans-serif;
+    margin-bottom: 5px;
+    background: rgba(126,200,160,0.2);
+    color: #7ec8a0;
+    border: 1px solid rgba(126,200,160,0.3);
+  }
+  .live-price { font-size: 18px; font-weight: 500; color: #fff; }
+  .price-meta { font-size: 11px; color: rgba(255,255,255,0.45); font-family: -apple-system, sans-serif; }
+
+  .metrics-row {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0,1fr));
+    gap: 1px;
+    background: #e8e8e8;
+    border-bottom: 1px solid #e0e0e0;
+  }
+  .metric { background: #fafaf8; padding: 10px 12px; }
+  .metric-label { font-size: 9px; text-transform: uppercase; letter-spacing: 0.06em; color: #999; font-family: -apple-system, sans-serif; margin-bottom: 3px; }
+  .metric-val { font-size: 14px; font-weight: 500; color: #111; }
+  .metric-val.up { color: #3B6D11; }
+
+  .body { padding: 1rem 1.25rem; }
+  .thesis { font-size: 14px; color: #444; line-height: 1.65; margin-bottom: 1rem; }
+  .pillars { border-top: 1px solid #eee; padding-top: 0.75rem; }
+  .pillar { display: flex; gap: 8px; align-items: flex-start; font-size: 13px; color: #444; line-height: 1.5; padding: 4px 0; }
+  .dot { width: 6px; height: 6px; border-radius: 50%; margin-top: 5px; flex-shrink: 0; background: #3B6D11; }
+
+  .card-footer {
+    border-top: 1px solid #e8e8e8;
+    padding: 8px 1.25rem;
+    display: flex;
+    justify-content: space-between;
+    font-size: 11px;
+    color: #aaa;
+    font-family: -apple-system, sans-serif;
+    background: #fafaf8;
+  }
+  .pt-label { color: #3B6D11; font-weight: 500; }
+</style>
+</head>
+<body>
+
+
+
+<div class="card">
+  <div class="card-header">
+    <div class="left-block">
+      <div class="logo-wrap">
+        <img src="https://g.foolcdn.com/art/companylogos/square/stz.png" alt="Constellation Brands">
+      </div>
+      <div>
+        <div class="ticker-name">Constellation Brands &nbsp;<span style="font-size:13px;font-weight:400;opacity:0.7;">STZ</span></div>
+        <div class="ticker-sub">Beverages &nbsp;&middot;&nbsp; NYSE</div>
+      </div>
+    </div>
+    <div class="right-block">
+      <div><span class="badge">Buy / Long</span></div>
+      <div class="live-price" id="stz-price">--</div>
+      <div class="price-meta" id="stz-meta"></div>
+    </div>
+  </div>
+
+  <div class="metrics-row">
+    <div class="metric">
+      <div class="metric-label">Fwd P/E</div>
+      <div class="metric-val">~17x</div>
+    </div>
+    <div class="metric">
+      <div class="metric-label">Beer margin</div>
+      <div class="metric-val">38%</div>
+    </div>
+    <div class="metric">
+      <div class="metric-label">Price target</div>
+      <div class="metric-val up">$176</div>
+    </div>
+  </div>
+
+  <div class="body">
+    <div class="thesis">Constellation Brands owns Corona, Modelo Especial, and Pacifico, three of the best-selling beer brands in the United States, and the stock is down 40% from its highs on tariff fears and a one-time wine writedown. The beer business has not changed. At 17x earnings against a peer group at 18.8x, the market is pricing in permanent damage to a franchise that has compounded for over a decade.</div>
+    <div class="pillars">
+      <div class="pillar"><div class="dot"></div>Beer margins held at 38% in FY2026. Beat both EPS and revenue on April 8 earnings, with a 9.6% EPS surprise.</div>
+      <div class="pillar"><div class="dot"></div>Trades at a discount to peers despite superior margins and one of the strongest brand portfolios in U.S. beverage.</div>
+      <div class="pillar"><div class="dot"></div>Any tariff resolution or wine portfolio exit removes the two biggest overhangs and could re-rate the stock quickly.</div>
+    </div>
+  </div>
+
+  <div class="card-footer">
+    <span>Updated April 2026 &nbsp;&middot;&nbsp; The Market Ledger</span>
+    <span class="pt-label">PT: $176 &nbsp;&middot;&nbsp; <span id="stz-upside">+5%</span> upside</span>
+  </div>
+</div>
+
+<script>
+async function fetchPrice() {
+  try {
+    const proxy = 'https://corsproxy.io/?';
+    const url = 'https://query1.finance.yahoo.com/v8/finance/chart/STZ?interval=1d&range=1d';
+    const res = await fetch(proxy + encodeURIComponent(url));
+    const data = await res.json();
+    const price = data.chart.result[0].meta.regularMarketPrice;
+    document.getElementById('stz-price').textContent = '$' + price.toFixed(2);
+    const diff = ((176 - price) / price * 100).toFixed(1);
+    const sign = parseFloat(diff) >= 0 ? '+' : '';
+    document.getElementById('stz-upside').textContent = sign + diff + '%';
+    const now = new Date();
+    const ts = now.toLocaleString('en-US', { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit', timeZoneName: 'short' });
+    document.getElementById('stz-meta').textContent = 'Updated ' + ts;
+  } catch(e) {
+    document.getElementById('stz-price').textContent = '--';
+  }
+}
+fetchPrice();
+</script>
+</body>
+</html>

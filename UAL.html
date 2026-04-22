@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>UAL  and  The Market Ledger</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'EB Garamond', Georgia, serif;
+    font-size: 17px;
+    line-height: 1.7;
+    color: #111;
+    background: #fff;
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 2.5rem 1.5rem 4rem;
+  }
+  .report-header { border-bottom: 1px solid #e0e0e0; padding-bottom: 1.5rem; margin-bottom: 1.75rem; }
+  .rh-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem; margin-bottom: 1.25rem; }
+  .ticker-row { display: flex; align-items: center; gap: 14px; }
+  .ticker { font-size: 24px; font-weight: 500; }
+  .co-name { font-size: 14px; color: #666; margin-top: 2px; font-style: italic; }
+  .rh-right { text-align: right; flex-shrink: 0; }
+  .badge { display: inline-block; font-size: 11px; font-weight: 500; padding: 4px 12px; border-radius: 20px; background: #EAF3DE; color: #3B6D11; margin-bottom: 8px; font-family: -apple-system, sans-serif; }
+  .price-curr { font-size: 26px; font-weight: 500; }
+  .price-pt { font-size: 14px; color: #666; margin-top: 2px; }
+  .price-pt span { color: #3B6D11; font-weight: 500; }
+  .thesis { font-size: 17px; color: #333; line-height: 1.75; border-top: 1px solid #eee; padding-top: 1.25rem; }
+  .metrics-strip { display: grid; grid-template-columns: repeat(5, 1fr); border: 1px solid #e0e0e0; border-radius: 8px; overflow: hidden; margin-bottom: 2rem; }
+  .metric-cell { padding: 14px 16px; border-right: 1px solid #e0e0e0; background: #fafaf8; }
+  .metric-cell:last-child { border-right: none; }
+  .mc-label { font-size: 11px; color: #888; margin-bottom: 4px; font-family: -apple-system, sans-serif; text-transform: uppercase; letter-spacing: 0.05em; }
+  .mc-val { font-size: 17px; font-weight: 500; }
+  .mc-val.up { color: #3B6D11; }
+  .section-title { font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.08em; color: #888; font-family: -apple-system, sans-serif; border-bottom: 1px solid #eee; padding-bottom: 8px; margin-bottom: 1.25rem; margin-top: 2rem; }
+  .chart-wrap { height: 200px; margin-bottom: 2rem; position: relative; }
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 2rem; }
+  .bar-wrap { height: 170px; position: relative; }
+  .chart-label { font-size: 13px; color: #888; font-family: -apple-system, sans-serif; margin-bottom: 6px; font-style: italic; }
+  .pillar { display: flex; gap: 14px; margin-bottom: 1.25rem; align-items: flex-start; }
+  .pnum { width: 22px; height: 22px; border-radius: 50%; background: #EAF3DE; color: #3B6D11; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 500; flex-shrink: 0; margin-top: 4px; font-family: -apple-system, sans-serif; }
+  .ptext { font-size: 16px; color: #333; line-height: 1.7; }
+  .ptext strong { font-weight: 500; color: #111; }
+  .catalyst-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 2rem; }
+  .cat-card { background: #fafaf8; border: 1px solid #e8e8e8; border-radius: 8px; padding: 12px 14px; }
+  .cat-label { font-size: 10px; color: #888; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 5px; font-family: -apple-system, sans-serif; }
+  .cat-val { font-size: 14px; color: #333; line-height: 1.5; }
+  .comp-table { width: 100%; border-collapse: collapse; margin-bottom: 2rem; font-size: 15px; }
+  .comp-table th { font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em; color: #888; font-family: -apple-system, sans-serif; font-weight: 500; padding: 8px 12px; border-bottom: 1px solid #e0e0e0; text-align: left; }
+  .comp-table td { padding: 10px 12px; border-bottom: 1px solid #eee; color: #333; }
+  .comp-table tr.highlight td { background: #fafaf8; font-weight: 500; color: #111; }
+  .comp-table td.up { color: #3B6D11; font-weight: 500; }
+  .risks { border: 1px solid #e8e8e8; border-radius: 8px; overflow: hidden; margin-bottom: 2rem; }
+  .risk-item { padding: 12px 16px; border-bottom: 1px solid #eee; font-size: 15px; color: #444; line-height: 1.6; }
+  .risk-item:last-child { border-bottom: none; }
+  .risk-item strong { color: #111; font-weight: 500; }
+  .report-footer { border-top: 1px solid #e0e0e0; padding-top: 1rem; margin-top: 2rem; display: flex; justify-content: space-between; align-items: center; font-size: 13px; color: #888; font-family: -apple-system, sans-serif; }
+  .footer-r { color: #3B6D11; font-weight: 500; }
+  .disclaimer { margin-top: 2.5rem; font-size: 13px; color: #aaa; font-style: italic; line-height: 1.6; border-top: 1px solid #eee; padding-top: 1rem; }
+  @media (max-width: 600px) {
+    .rh-top { flex-direction: column; }
+    .rh-right { text-align: left; }
+    .metrics-strip { grid-template-columns: repeat(3, 1fr); }
+    .two-col { grid-template-columns: 1fr; }
+    .catalyst-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="report-header">
+  <div class="rh-top">
+    <div class="ticker-row">
+      <div style="width:48px;height:48px;border-radius:8px;overflow:hidden;flex-shrink:0;background:#003DA5;display:flex;align-items:center;justify-content:center;padding:6px;">
+        <img src="https://upload.wikimedia.org/wikipedia/sco/thumb/e/e0/United_Airlines_Logo.svg/1280px-United_Airlines_Logo.svg.png" alt="United Airlines" style="width:100%;height:100%;object-fit:contain;">
+      </div>
+      <div>
+        <div class="ticker">United Airlines</div>
+        <div class="co-name">Airlines / Air Transportation &nbsp;&middot;&nbsp; NASDAQ: UAL</div>
+      </div>
+    </div>
+    <div class="rh-right">
+      <div><span class="badge">Buy / Long</span></div>
+      <div class="price-curr" id="live-price">--</div>
+      <div class="price-pt">Price target: <span>$130</span> &nbsp;&middot;&nbsp; <span id="live-upside">+28%</span> upside</div>
+      <div id="price-meta" style="font-size:12px;color:#888;margin-top:4px;font-family:-apple-system,sans-serif;"></div>
+    </div>
+  </div>
+  <div class="thesis">
+    United Airlines beat Q1 2026 revenue and EPS estimates, then cut its full-year guidance from $12 to $14 per share down to $7 to $11  and  and the stock sold off hard on the headline. That selloff is the opportunity. The guidance cut was driven entirely by the Iran war fuel spike, and jet fuel has already fallen from $4.78 a gallon on April 2 to $3.51 as the Strait of Hormuz reopened. United's own guidance assumes it recovers 85 to 100% of fuel cost increases by Q4. Meanwhile premium revenue was up 14%, loyalty revenue up 13%, and basic economy up 7% in Q1. At 10x forward earnings with a $130 average analyst price target, the market is pricing in a permanently broken airline. The underlying business says otherwise.
+  </div>
+</div>
+
+<div class="metrics-strip">
+  <div class="metric-cell"><div class="mc-label">Market Cap</div><div class="mc-val">~$33B</div></div>
+  <div class="metric-cell"><div class="mc-label">Revenue (TTM)</div><div class="mc-val">$59.1B</div></div>
+  <div class="metric-cell"><div class="mc-label">Fwd P/E</div><div class="mc-val">~10x</div></div>
+  <div class="metric-cell"><div class="mc-label">Free Cash Flow</div><div class="mc-val up">$2.56B</div></div>
+  <div class="metric-cell"><div class="mc-label">Price Target</div><div class="mc-val up">$130</div></div>
+</div>
+
+<div class="section-title">Price history (2023 to 2026)</div>
+<div class="chart-wrap"><canvas id="ualPriceChart"></canvas></div>
+
+<div class="section-title">Revenue and EPS growth</div>
+<div class="two-col">
+  <div>
+    <div class="chart-label">Annual revenue ($B)</div>
+    <div class="bar-wrap"><canvas id="ualRevChart"></canvas></div>
+  </div>
+  <div>
+    <div class="chart-label">Diluted EPS ($)</div>
+    <div class="bar-wrap"><canvas id="ualEpsChart"></canvas></div>
+  </div>
+</div>
+
+<div class="section-title">Peer valuation comparison</div>
+<table class="comp-table">
+  <thead>
+    <tr>
+      <th>Company</th>
+      <th>Ticker</th>
+      <th>Fwd P/E</th>
+      <th>Net margin</th>
+      <th>Rev growth (YoY)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr class="highlight">
+      <td>United Airlines</td>
+      <td>UAL</td>
+      <td class="up">~10x</td>
+      <td>5.68%</td>
+      <td>+10.6%</td>
+    </tr>
+    <tr>
+      <td>Delta Air Lines</td>
+      <td>DAL</td>
+      <td>10x</td>
+      <td>7.36%</td>
+      <td>+8.2%</td>
+    </tr>
+    <tr>
+      <td>American Airlines</td>
+      <td>AAL</td>
+      <td>7x</td>
+      <td>1.1%</td>
+      <td>+3.4%</td>
+    </tr>
+    <tr>
+      <td>Southwest Airlines</td>
+      <td>LUV</td>
+      <td>14x</td>
+      <td>1.2%</td>
+      <td>+2.1%</td>
+    </tr>
+    <tr>
+      <td>Industry average</td>
+      <td></td>
+      <td>10x</td>
+      <td>4.85%</td>
+      <td></td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="section-title">Investment thesis</div>
+<div class="pillars" style="margin-bottom:2rem;">
+  <div class="pillar">
+    <div class="pnum">1</div>
+    <div class="ptext"><strong>The guidance cut is a fuel story, not a demand story.</strong> United lowered full-year EPS guidance from $12 to $14 down to $7 to $11 entirely because of a $340 million year-over-year increase in fuel costs driven by the Iran war. Jet fuel peaked at $4.78 a gallon on April 2 and has since fallen to $3.51 as Iran reopened the Strait of Hormuz. United's own guidance explicitly states it expects to recover 85 to 100% of fuel cost increases by Q4. If fuel stays near current levels, the company is tracking toward the upper half of the range  and  which is still a very profitable year. The market is treating a temporary external shock as a permanent impairment.</div>
+  </div>
+  <div class="pillar">
+    <div class="pnum">2</div>
+    <div class="ptext"><strong>The premium revenue engine is structurally stronger than the headline suggests.</strong> Q1 premium revenue was up 14% year-over-year. Loyalty revenue grew 13%. Basic economy grew 7%. Corporate travel reached 95% of 2019 levels with contracted corporate revenues up 13%. MileagePlus credit card spend hit a new record. United is not a commodity airline  and  it has diversified its revenue base into high-margin streams that are far less sensitive to fuel costs than traditional ticket revenue. The United Next fleet strategy, with MAX deliveries running ahead of schedule, also adds a structural margin tailwind as newer, more fuel-efficient planes enter service.</div>
+  </div>
+  <div class="pillar">
+    <div class="pnum">3</div>
+    <div class="ptext"><strong>The valuation does not reflect the quality of the business.</strong> At roughly 10x forward earnings with a fair P/E estimate of 17x, a PEG ratio of 0.65, and an average analyst price target of $130 implying 28% upside, UAL is the cheapest it has been on a fundamental basis in years. Return on equity is 24%. Free cash flow was $2.56 billion over the trailing twelve months. The consensus rating is Strong Buy across 13 analysts. This is a business with real earnings power being discounted because of a temporary commodity shock that is already reversing.</div>
+  </div>
+</div>
+
+<div class="section-title">Key catalysts</div>
+<div class="catalyst-grid">
+  <div class="cat-card">
+    <div class="cat-label">Fuel price normalization</div>
+    <div class="cat-val">Jet fuel has already fallen from $4.78 to $3.51. Further declines push United toward the upper half of its $7 to $11 EPS guidance range.</div>
+  </div>
+  <div class="cat-card">
+    <div class="cat-label">Q2 2026 earnings</div>
+    <div class="cat-val">Any sign that fuel recovery is tracking ahead of the 40 to 50% Q2 assumption would be a meaningful positive catalyst for the stock.</div>
+  </div>
+  <div class="cat-card">
+    <div class="cat-label">Fleet modernization</div>
+    <div class="cat-val">MAX deliveries running ahead of schedule add fuel efficiency gains that structurally reduce cost per available seat mile over time.</div>
+  </div>
+</div>
+
+<div class="section-title">Risks worth watching</div>
+<div class="risks">
+  <div class="risk-item"><strong>Fuel re-escalation:</strong> If geopolitical tensions reignite and oil prices spike again, United's second-half recovery thesis breaks down. The company's guidance explicitly flags this as the key binary risk.</div>
+  <div class="risk-item"><strong>Macro and demand softening:</strong> Consumer confidence hit a record low this week. If leisure travel demand weakens materially alongside already-pressured low-income consumers, volume assumptions could disappoint even if fuel cooperates.</div>
+  <div class="risk-item"><strong>Debt load:</strong> United carries $31 billion in debt against $12.2 billion in cash, giving a net debt position of roughly $18.8 billion. In a prolonged stress scenario, the balance sheet limits flexibility in a way that pure-play growth businesses do not face.</div>
+  <div class="risk-item"><strong>Labor negotiations:</strong> Ongoing negotiations with various labor groups represent a cost wildcard that has not yet been fully resolved. An unfavorable settlement would add to the already elevated cost per available seat mile.</div>
+</div>
+
+<div class="report-footer">
+  <span>Updated April 22, 2026 &nbsp;&middot;&nbsp; Prices update live on page load</span>
+  <span class="footer-r">Price target: $130 &nbsp;&middot;&nbsp; Buy</span>
+</div>
+
+<div class="disclaimer">
+  This report is for informational purposes only and does not constitute financial advice. I may hold positions in securities discussed. Do your own research before making any investment decisions.
+</div>
+
+<script>
+const gc = 'rgba(0,0,0,0.06)';
+const tc = 'rgba(0,0,0,0.38)';
+
+const lineOpts = {
+  responsive: true, maintainAspectRatio: false,
+  plugins: { legend: { display: false }, tooltip: { mode: 'index', intersect: false, backgroundColor: '#fff', titleColor: '#111', bodyColor: '#666', borderColor: '#e0e0e0', borderWidth: 1, padding: 10 } },
+  scales: {
+    x: { grid: { display: false }, ticks: { color: tc, font: { size: 11, family: '-apple-system,sans-serif' } } },
+    y: { grid: { color: gc }, ticks: { color: tc, font: { size: 11, family: '-apple-system,sans-serif' } } }
+  }
+};
+
+const barOpts = (label) => ({
+  responsive: true, maintainAspectRatio: false,
+  plugins: { legend: { display: false }, tooltip: { backgroundColor: '#fff', titleColor: '#111', bodyColor: '#666', borderColor: '#e0e0e0', borderWidth: 1, padding: 8 } },
+  scales: {
+    x: { grid: { display: false }, ticks: { color: tc, font: { size: 11, family: '-apple-system,sans-serif' } } },
+    y: { grid: { color: gc }, ticks: { color: tc, font: { size: 11, family: '-apple-system,sans-serif' } }, title: { display: true, text: label, color: tc, font: { size: 10, family: '-apple-system,sans-serif' } } }
+  }
+});
+
+async function fetchUalPrice() {
+  const priceEl = document.getElementById('live-price');
+  const metaEl = document.getElementById('price-meta');
+  try {
+    const proxy = 'https://corsproxy.io/?';
+    const url = 'https://query1.finance.yahoo.com/v8/finance/chart/UAL?interval=1d&range=1d';
+    const res = await fetch(proxy + encodeURIComponent(url));
+    const data = await res.json();
+    const price = data.chart.result[0].meta.regularMarketPrice;
+    priceEl.textContent = '$' + price.toFixed(2);
+    const pt = 130;
+    const upside = ((pt - price) / price * 100).toFixed(1);
+    const sign = parseFloat(upside) >= 0 ? '+' : '';
+    document.getElementById('live-upside').textContent = sign + upside + '%';
+    const now = new Date();
+    const ts = now.toLocaleString('en-US', { month: 'short', day: 'numeric', year: 'numeric', hour: 'numeric', minute: '2-digit', timeZoneName: 'short' });
+    metaEl.textContent = 'Last updated: ' + ts;
+  } catch(e) {
+    priceEl.textContent = 'Price unavailable';
+  }
+}
+fetchUalPrice();
+
+new Chart(document.getElementById('ualPriceChart'), {
+  type: 'line',
+  data: {
+    labels: ['Jan 23','Apr 23','Jul 23','Oct 23','Jan 24','Apr 24','Jul 24','Oct 24','Jan 25','Apr 25','Jul 25','Oct 25','Jan 26','Apr 26'],
+    datasets: [{
+      data: [45, 52, 58, 48, 55, 45, 62, 75, 95, 70, 110, 100, 115, 100],
+      borderColor: '#003DA5', borderWidth: 2,
+      fill: true, backgroundColor: 'rgba(0,61,165,0.05)',
+      tension: 0.35, pointRadius: 0, pointHoverRadius: 4
+    }]
+  },
+  options: lineOpts
+});
+
+new Chart(document.getElementById('ualRevChart'), {
+  type: 'bar',
+  data: {
+    labels: ['2022', '2023', '2024', '2025'],
+    datasets: [{ data: [44.9, 53.7, 57.1, 59.1], backgroundColor: '#85B7EB', borderRadius: 4, label: 'Revenue ($B)' }]
+  },
+  options: barOpts('Revenue ($B)')
+});
+
+new Chart(document.getElementById('ualEpsChart'), {
+  type: 'bar',
+  data: {
+    labels: ['2022', '2023', '2024', '2025'],
+    datasets: [{ data: [2.26, 9.99, 10.61, 10.32], backgroundColor: '#85B7EB', borderRadius: 4, label: 'EPS ($)' }]
+  },
+  options: barOpts('EPS ($)')
+});
+</script>
+</body>
+</html>
